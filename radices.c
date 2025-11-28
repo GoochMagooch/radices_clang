@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <ctype.h>
 
 // CLEAR TERMINAL
 void clear() {
@@ -37,11 +38,26 @@ int length(char* arr) {
 }
 */
 
+// CONVERT CHARACTER TO INTEGER
 int return_int(char ch) {
     int n = 0;
 
     if (ch >= '0' && ch <= '9') {
         n = ch - '0';
+    } else if (tolower(ch) == 'a') {
+        n = 10;
+    } else if (tolower(ch) == 'b') {
+        n = 11;
+    } else if (tolower(ch) == 'c') {
+        n = 12;
+    } else if (tolower(ch) == 'd') {
+        n = 13;
+    } else if (tolower(ch) == 'e') {
+        n = 14;
+    } else if (tolower(ch) == 'f') {
+        n = 15;
+    } else {
+        n = -1;
     }
 
     return n;
@@ -130,11 +146,7 @@ void radix_to_decimal() {
 
         int int_arr[len];
         for (int i = 0; number[i] != '\0'; i++) {
-            if (number[i] == 'A') {
-                int_arr[i] = 10;
-            } else {
-                int_arr[i] = return_int(number[i]);
-            }
+            int_arr[i] = return_int(number[i]);
         }
 
         int ans = 0;
