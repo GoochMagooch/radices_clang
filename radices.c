@@ -116,8 +116,16 @@ void decimal_to_radix() {
 
         persist = false;
     }
-
     printf("Coming soon! Program ending...\n");
+}
+
+// RETURN LENGTH OF CHAR ARRAY
+int arr_len(char *arr) {
+    int len = 0;
+    for (int i = 0; arr[i] != '\0'; i++) {
+        len += 1;
+    }
+    return len;
 }
 
 // RADICES TO DECIMAL CONVERTER
@@ -138,38 +146,41 @@ void radix_to_decimal() {
 
         printf("Enter your base %d number: ", radix);
         scanf("%9s", number);
- 
-        int len = 0;
+        int length = arr_len(number);
+
+        // checks for invalid digit symbols, adds to array if valid
+        int int_arr[length];
         for (int i = 0; number[i] != '\0'; i++) {
-            len += 1;
-        }
-
-        int int_arr[len];
-        for (int i = 0; number[i] != '\0'; i++) {
-            int_arr[i] = return_int(number[i]);
-        }
-
-        int ans = 0;
-
-        int final_arr[len];
-        int position = len-1;
-        int position_radix = radix;
-        for (int i = 0; i < len; i++) {
-            if (int_arr[i] >= radix) {
-                //TODO: add checks for integers larger than radix
+            if (return_int(number[i]) == -1 || return_int(number[i]) >= radix) {
+                printf("Digit %c invalid in base %d\n", number[i], radix);
+                persist = false;
                 break;
             } else {
-                if (position == 0) {
-                    ans += int_arr[i] * 1;
-                } else if (position == 1) {
-                    ans += int_arr[i] * radix;
-                } else {
-                    for (int i = 0; i < position-1; i++) {
-                        position_radix = position_radix * radix;
-                    }
-                    ans += int_arr[i] * position_radix;
-                    position_radix = radix;
+                int_arr[i] = return_int(number[i]);
+            }
+        }
+
+        // ends program if invalid digit symbol detected
+        if (persist == false) {
+            break;
+        }
+
+        // calculates decimal version of radix
+        int ans = 0;
+        int final_arr[length];
+        int position = length-1;
+        int position_radix = radix;
+        for (int i = 0; i < length; i++) {
+            if (position == 0) {
+                ans += int_arr[i] * 1;
+            } else if (position == 1) {
+                ans += int_arr[i] * radix;
+            } else {
+                for (int i = 0; i < position-1; i++) {
+                    position_radix = position_radix * radix;
                 }
+                ans += int_arr[i] * position_radix;
+                position_radix = radix;
             }
             position -= 1;
         }
