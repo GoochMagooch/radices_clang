@@ -92,7 +92,6 @@ void decimal_to_radix() {
         scanf("%d", &radix);
 
         int exponent_count = 1;
-        int digits = -1;
         int num_length = 0;
         for (int i = 0; decimal >= exponent_count; i++) {
             if (decimal >= exponent_count) {
@@ -101,45 +100,27 @@ void decimal_to_radix() {
             }
         }
 
-        printf("num_length: %d\n", num_length);
-
-        exponent_count = 1;
+        // calculates decimal to radix
         int ans[num_length];
-        for (int i = 0; digits < num_length; i++) {
-            if (decimal == exponent_count) {
-                decimal = decimal - exponent_count;
-                digits += 1;
-                ans[digits] = 1;
-            } else if (decimal > exponent_count) {
-                if (digits >= 0) {
-                    digits += 1;
-                    ans[digits] = 1;
-                    decimal = decimal - exponent_count;
-                    exponent_count = exponent_count / radix;
-                } else {
-                    exponent_count = exponent_count * radix;
-                }
-            } else {
-                if (digits == -1) {
-                    exponent_count = exponent_count / radix;
-                    decimal = decimal - exponent_count;
-                    exponent_count = exponent_count / radix;
-                    digits += 1;
-                    ans[digits] = 1;
-                } else {
-                    digits += 1;
-                    ans[digits] = 0;
-                    exponent_count = exponent_count / radix;
-                }
-            }
+
+        int dividend = decimal;
+        int divisor = radix;
+        int temp_decimal = 0;
+        int index = 1;
+        for (int i = 0; dividend > (radix-1); i++) {
+            ans[num_length-index] = dividend % radix;
+            dividend = dividend / radix;
+            index++;
         }
+
+        ans[num_length-index] = dividend;
+
         for (int i = 0; i < num_length; i++) {
             printf("%d", ans[i]);
         }
         printf("\n");
         persist = false;
     }
-    printf("Coming soon! Program ending...\n");
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
