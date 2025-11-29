@@ -4,6 +4,9 @@
 #include <stdbool.h>
 #include <ctype.h>
 
+// TODO: Add functionality for numbers with fractionals
+// TODO: Add functionality for negative numbers
+
 // CLEAR TERMINAL
 void clear() {
     #ifdef _WIN32
@@ -13,13 +16,15 @@ void clear() {
     #endif
 }
 
+// DISPLAY MENU BANNER
 void menu_banner() {
-    printf(" ___         _ _             _____         _ _   _ _\n");
+    printf(".___         _ _            ._____.        _ _   _ _\n");
     printf("| _ \\__ _ __| (_)__ ___ ___ |_   _|__  ___| | |_(_) |_\n");
     printf("|   / _` / _` | / _/ -_|_-<   | |/ _ \\/ _ \\ | / / |  _|\n");
     printf("|_|_\\__,_\\__,_|_\\__\\___/__/   |_|\\___/\\___/_|_\\_\\_|\\__|\n\n");
 }
 
+// DISPLAY MAIN MENU
 void display_menu() {
     printf("Welcome to your Radices Toolkit!\n\n");
 
@@ -29,14 +34,14 @@ void display_menu() {
     printf("3. Radices Calculator\n\n");
 }
 
-/*
-// FIND LENGTH OF ARRAY
-int length(char* arr) {
-    int len = sizeof(arr) / sizeof(arr[0]);
-
+// RETURN LENGTH OF CHAR ARRAY
+int arr_len(char *arr) {
+    int len = 0;
+    for (int i = 0; arr[i] != '\0'; i++) {
+        len += 1;
+    }
     return len;
 }
-*/
 
 // CONVERT CHARACTER TO INTEGER
 int return_int(char ch) {
@@ -63,7 +68,9 @@ int return_int(char ch) {
     return n;
 }
 
-// DECIMAL TO RADICES CONVERTER
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~ DECIMAL TO RADICES CONVERTER ~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void decimal_to_radix() {
 
     clear();
@@ -119,16 +126,9 @@ void decimal_to_radix() {
     printf("Coming soon! Program ending...\n");
 }
 
-// RETURN LENGTH OF CHAR ARRAY
-int arr_len(char *arr) {
-    int len = 0;
-    for (int i = 0; arr[i] != '\0'; i++) {
-        len += 1;
-    }
-    return len;
-}
-
-// RADICES TO DECIMAL CONVERTER
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~ RADICES TO DECIMAL CONVERTER ~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void radix_to_decimal() {
     clear();
     menu_banner();
@@ -190,7 +190,9 @@ void radix_to_decimal() {
     }
 }
 
-// RADICES CALCULATOR
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~ RADICES CALCULATOR ~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void radices_calculator() {
     clear();
     menu_banner();
@@ -221,7 +223,9 @@ void radices_calculator() {
     printf("Thank you, calculator coming soon...\n");
 }
 
-// MAIN MENU
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~ MAIN MENU ~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 int main() {
 
     // menu functionality
