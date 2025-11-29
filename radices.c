@@ -6,6 +6,7 @@
 
 // TODO: Add functionality for numbers with fractionals
 // TODO: Add functionality for negative numbers
+// TODO: Don't end program after calculation finishes or invalid digit entered
 
 // CLEAR TERMINAL
 void clear() {
@@ -81,46 +82,61 @@ void decimal_to_radix() {
     bool persist = true;
 
     while(persist) {
-        char decimal[10];
+        int decimal;
         int radix;
 
         printf("Enter your number: ");
-        scanf("%9s", decimal);
+        scanf("%d", &decimal);
 
         printf("Enter your radix: ");
         scanf("%d", &radix);
 
-        /*
-        int len = 0;
-        for (int i = 0; decimal[i] != '\0'; i++) {
-            len += 1;
+        int exponent_count = 1;
+        int digits = -1;
+        int num_length = 0;
+        for (int i = 0; decimal >= exponent_count; i++) {
+            if (decimal >= exponent_count) {
+                exponent_count = exponent_count * radix;
+                num_length += 1;
+            }
         }
 
-        int int_arr[len];
-        for (int i = 0; decimal[i] != '\0'; i++) {
-            int_arr[i] = return_int(decimal[i]);
-        }
+        printf("num_length: %d\n", num_length);
 
-        int final_arr[len];
-        int position = len-1;
-        int ans = 0;
-        for (int i = 0; i < len; i++) {
-            if (int_arr[i] >= radix) {
-                printf("Invalid digit in base %d: %d\n", radix, int_arr[i]);
-                break;
-            } else {
-                if (position > 0) {
-                    if (position == 1) {
-                        ans += int_arr[i] * radix
-                    }
-                    ans += int_arr[i] * ();
+        exponent_count = 1;
+        int ans[num_length];
+        for (int i = 0; digits < num_length; i++) {
+            if (decimal == exponent_count) {
+                decimal = decimal - exponent_count;
+                digits += 1;
+                ans[digits] = 1;
+            } else if (decimal > exponent_count) {
+                if (digits >= 0) {
+                    digits += 1;
+                    ans[digits] = 1;
+                    decimal = decimal - exponent_count;
+                    exponent_count = exponent_count / radix;
                 } else {
-                    ans += int_arr[i] * 1;
+                    exponent_count = exponent_count * radix;
+                }
+            } else {
+                if (digits == -1) {
+                    exponent_count = exponent_count / radix;
+                    decimal = decimal - exponent_count;
+                    exponent_count = exponent_count / radix;
+                    digits += 1;
+                    ans[digits] = 1;
+                } else {
+                    digits += 1;
+                    ans[digits] = 0;
+                    exponent_count = exponent_count / radix;
                 }
             }
         }
-        */
-
+        for (int i = 0; i < num_length; i++) {
+            printf("%d", ans[i]);
+        }
+        printf("\n");
         persist = false;
     }
     printf("Coming soon! Program ending...\n");
