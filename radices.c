@@ -4,8 +4,7 @@
 #include <stdbool.h>
 #include <ctype.h>
 
-// TODO: Add functionality for numbers with fractionals
-// TODO: Don't end program after calculation finishes or invalid digit entered
+// TODO: Don't end program after calculation finishes or error detected
 
 // CLEAR TERMINAL
 void clear() {
@@ -63,7 +62,6 @@ int return_int(char ch) {
     return -1;
 }
 
-// TODO: CONVERT INTEGER TO CHARACTER
 char return_char(int num) {
     char ch;
     int int_counter = 0;
@@ -86,12 +84,13 @@ char return_char(int num) {
             int_counter++;
         }
     }
-    // return -1;
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // ~~~~~~~~~~ DECIMAL TO RADICES CONVERTER ~~~~~~~~~~
 void decimal_to_radix() {
+    // TODO: Add functionality for numbers with fractionals
+
     clear();
     menu_banner();
     printf("DECIMAL TO RADICES CONVERTER\n");
@@ -166,6 +165,9 @@ void decimal_to_radix() {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // ~~~~~~~~~~ RADICES TO DECIMAL CONVERTER ~~~~~~~~~~
 void radix_to_decimal() {
+    // TODO: Add functionality for numbers with fractionals
+    // TODO: Add functionality for negative numbers
+
     clear();
     menu_banner();
     printf("RADICES TO DECIMAL CONVERTER\n");
@@ -173,7 +175,6 @@ void radix_to_decimal() {
 
     bool persist = true;
 
-    // TODO: Add functionality for negative numbers
     while(persist) {
         char number[10];
         int radix;
