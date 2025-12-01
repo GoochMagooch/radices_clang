@@ -49,6 +49,7 @@ int return_int(char ch) {
 
     if (ch >= '0' && ch <= '9') {
         n = ch - '0';
+        return n;
     } else {
         for (int i = 97; i < 123; i++) {
             if (tolower(ch) == i) {
@@ -83,6 +84,18 @@ char return_char(int num) {
         } else {
             int_counter++;
         }
+    }
+}
+
+void radices_name(int num) {
+    if (num == 2) {
+        printf("Your number in Binary: ");
+    } else if (num == 8) {
+        printf("Your number in Octal: ");
+    } else if (num == 10) {
+        printf("Your number in Decimal: ");
+    } else if (num == 16) {
+        printf("Your number in Hexadecimal: ");
     }
 }
 
@@ -127,6 +140,7 @@ void decimal_to_radix() {
             break;
         }
 
+        // finds length of array that will be filled later
         int exponent_count = 1;
         int num_length = 0;
         for (int i = 0; decimal >= exponent_count; i++) {
@@ -150,6 +164,8 @@ void decimal_to_radix() {
         }
 
         ans[num_length-index] = return_char(dividend);
+
+        radices_name(radix);
 
         if (neg_num == true) {
             printf("-");
@@ -176,20 +192,29 @@ void radix_to_decimal() {
     bool persist = true;
 
     while(persist) {
-        char number[10];
+        char number[11];
+        char temp[256];
         int radix;
 
         printf("Enter your radix: ");
         scanf("%d", &radix);
 
-        if (radix > 36 || radix < 2) {
+        if (radix < 2 || radix > 36) {
             printf("Please choose a radix 2 and 36!\n");
             break;
         }
-
+ 
         printf("Enter your base %d number: ", radix);
-        scanf("%9s", number);
-        int length = arr_len(number);
+        scanf("%255s", temp);
+        int length = arr_len(temp);
+
+        // checks length of user input
+        if (length > 10) {
+            printf("Please enter a number with 10 digits or less!\n");
+            break;
+        } else {
+            strcpy(number, temp);
+        }
 
         // checks for invalid digit symbols, adds to array if valid
         int int_arr[length];
@@ -235,11 +260,22 @@ void radix_to_decimal() {
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // ~~~~~~~~~~~~~~~ RADICES CALCULATOR ~~~~~~~~~~~~~~~
+
+int calc_add() {
+
+}
+
 void radices_calculator() {
     clear();
     menu_banner();
     printf("RADICES CALCULATOR\n");
     printf("Add, Subtract or Multiply radices from binary to hexadecimal!\n\n");
+
+    // TODO:
+    // 1. Populate char arrays with user numbers
+    // 2. Add necessary leading/trailing 0s to each array
+    // 3. Use return_int() function to turn each individual char to int
+    // 4. Send each individual int to new int arrays
 
     bool persist = true;
     while (persist) {
