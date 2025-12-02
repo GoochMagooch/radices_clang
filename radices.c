@@ -252,8 +252,12 @@ void radix_to_decimal() {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // ~~~~~~~~~~~~~~~ RADICES CALCULATOR ~~~~~~~~~~~~~~~
 
-int calc_add() {
-
+void calc_add(int *num1, int *num2, int iterator) {
+    int ans;
+    for (int i = 0; i < iterator; i++) {
+        ans = (num1[i] + num2[i]);
+        printf("%d", ans);
+    }
 }
 
 void radices_calculator() {
@@ -271,25 +275,71 @@ void radices_calculator() {
     bool persist = true;
     while (persist) {
         int radix;
-        printf("Choose your radix: ");
+        printf("Choose a radix from 2 - 36: ");
         scanf("%d", &radix);
 
-        int radix_num1;
+        char num1[256];
         printf("Enter your first number in base %d: ", radix);
-        scanf("%d", &radix_num1);
+        scanf("%255s", num1);
 
         char op;
         printf("Enter your operator (*, + or -): ");
         scanf(" %c", &op);
 
-        int radix_num2;
+        char num2[256];
         printf("Enter your second number in base %d: ", radix);
-        scanf("%d", &radix_num2);
+        scanf("%255s", num2);
 
+        // add leading 0s, if applicable
+        int num1_len = arr_len(num1);
+        int num2_len = arr_len(num2);
+        int len_diff;
+
+        if (num1_len > num2_len) {
+            len_diff = num1_len - num2_len;
+            num2_len = (num2_len+len_diff);
+        } else {
+            len_diff = num2_len - num1_len;
+            num1_len = (num1_len+len_diff);
+        }
+
+        int num1_integers[num1_len];
+        int num1_integers_len = sizeof(num1_integers) / sizeof(num1_integers[0]);
+        int num2_integers[num2_len];
+        int num2_integers_len = sizeof(num2_integers) / sizeof(num2_integers[0]);
+
+        num1_len = arr_len(num1);
+        num2_len = arr_len(num2);
+        if (num1_len > num2_len) {
+            for (int i = 0; i < len_diff; i++) {
+                num2_integers[i] = 0;
+            }
+            for (int i = len_diff; i < num2_integers_len; i++) {
+                num2_integers[i] = return_int(num2[(i-len_diff)]);
+            }
+            for (int i = 0; i < num1_integers_len; i++) {
+                num1_integers[i] = return_int(num1[i]);
+            }
+        } else {
+            // TODO: populate arrays if num2_len > num_len
+            printf("num2_len > num1_len len_diff: %d", len_diff);
+        }
+
+        if (op == '+') {
+            for (int i = 0; i < num1_len; i++) {
+                printf("%c", num1[i]);
+            }
+            printf(" + ");
+            for (int i = 0; i < num2_len; i++) {
+                printf("%c", num2[i]);
+            }
+            printf(" = ");
+            calc_add(num1_integers, num2_integers, num1_integers_len);
+            printf("\n");
+        }
+ 
         persist = false;
     }
-
-    printf("Thank you, calculator coming soon...\n");
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
