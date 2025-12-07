@@ -156,8 +156,6 @@ void decimal_to_radix() {
         char ans[num_length];
 
         int dividend = decimal;
-        int divisor = radix;
-        int temp_decimal = 0;
         int index = 1;
         for (int i = 0; dividend > (radix-1); i++) {
             ans[num_length-index] = return_char((dividend % radix));
@@ -228,7 +226,7 @@ void radix_to_decimal() {
 
         // calculates decimal version of radix
         int ans = 0;
-        int final_arr[length];
+        // int final_arr[length];
         int position = length-1;
         int position_radix = radix;
         for (int i = 0; i < length; i++) {
@@ -338,7 +336,6 @@ void calc_add(int *num1, int *num2, int iterator, int r, bool sub, int *sub_comp
 }
 
 void calc_sub(int *num1, int *num2, int iterator, int r) {
-    // TODO: if carry over digit, convert sum to original base
 
     // convert num1 to decimal (array of integers)
     int dec1 = 0;
@@ -368,7 +365,6 @@ void calc_sub(int *num1, int *num2, int iterator, int r) {
             bin1_length += 1;
         }
     }
-    // printf("bin1_length: %d\n", bin1_length);
 
     char ans_arr1[bin1_length];
     int dividend = dec1;
@@ -412,7 +408,6 @@ void calc_sub(int *num1, int *num2, int iterator, int r) {
             bin2_length += 1;
         }
     }
-    // printf("bin2_length: %d\n", bin2_length);
 
     char ans_arr2[bin2_length];
     dividend = dec2;
@@ -477,58 +472,53 @@ void calc_sub(int *num1, int *num2, int iterator, int r) {
     int min_plus_2comp[index];
     int carry_over;
     calc_add(minuend, final_two_complement, index, 2, true, min_plus_2comp, &carry_over);
-    // everything above here works as intended after testing
-    // properly finds the 2s complement of the subtrahend and adds it to the minuend
 
-    // FIX:
-    // checks for the presence of a carry over digit (the check works, the proceeding logic does not)
+    // checks for the presence of a carry over digit
     if (carry_over == 1) {
-        // FIX: right here bro
-        int pos_carry_num[index+1];
-        for (int i = 0; i < index+1; i++) {
-            if (i == 0) {
-                pos_carry_num[i] = 1;
-            } else {
-                pos_carry_num[i] = min_plus_2comp[i-1];
-            }
-        }
-        // convert min_plus_2comp (plus carry over digit) to decimal
+        // convert min_plus_2comp to decimal works after testing
         int pos_ans = 0;
         int pos_position = index-1;
         int pos_position_r = 2;
         for (int i = 0; i < index; i++) {
             if (pos_position == 0) {
-                pos_ans += pos_carry_num[i] * 1;
+                pos_ans += min_plus_2comp[i] * 1;
             } else if (pos_position == 1) {
-                pos_ans += pos_carry_num[i] * 2;
+                pos_ans += min_plus_2comp[i] * 2;
             } else {
                 for (int i = 0; i < pos_position-1; i++) {
                     pos_position_r = pos_position_r * 2;
                 }
-                pos_ans += pos_carry_num[i] * pos_position_r;
+                pos_ans += min_plus_2comp[i] * pos_position_r;
                 pos_position_r = 2;
             }
             pos_position -= 1;
         }
         // convert pos_ans to original radix
-        int new_index = index+1;
-        char pos_ans_arr[new_index];
-
-        int pos_dividend = pos_ans;
-        int pos_index = 1;
-        for (int i = 0; pos_dividend > (r-1); i++) {
-            pos_ans_arr[new_index-pos_index] = return_char((pos_dividend % r));
-            pos_dividend = pos_dividend / r;
-            pos_index++;
+        int exponent_count = 1;
+        int num_length = 0;
+        for (int i = 0; pos_ans >= exponent_count; i++) {
+            if (pos_ans >= exponent_count) {
+                exponent_count = exponent_count * r;
+                num_length += 1;
+            }
         }
 
-        pos_ans_arr[new_index-pos_index] = return_char(pos_dividend);
-        for (int i = 0; i < index; i++) {
+        char pos_ans_arr[num_length];
+        int pos_dividend = pos_ans;
+        index = 1;
+        for (int i = 0; pos_dividend > (r-1); i++) {
+            pos_ans_arr[num_length-index] = return_char((pos_dividend % r));
+            pos_dividend = pos_dividend / r;
+            index++;
+        }
+
+        pos_ans_arr[num_length-index] = return_char(pos_dividend);
+        for (int i = 0; i < num_length; i++) {
            printf("%c", pos_ans_arr[i]);
         }
 
     } else {
-        // FIX: and here too
+        // FIX: else statement
         int bit_flip[index];
         for (int i = 0; i < index; i++) {
             if (min_plus_2comp[i] == 0) {
