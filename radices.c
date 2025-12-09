@@ -590,31 +590,41 @@ void calc_sub(int *num1, int *num2, int iterator, int r) {
 int calc_mul(int *num1, int *num2, int iterator, int r) {
     clear();
     menu_banner();
+    for (int i = 0; i < iterator; i++) {
+        printf("%d ", num1[i]);
+    }
+    printf("\n");
+    for (int i = 0; i < iterator; i++) {
+        printf("%d ", num2[i]);
+    }
+    printf("\n");
     int final_product = 0;
     int ans_place_counter = 1;
-    printf("final_product before calculation: %d\n", final_product);
 
-    // FIX: 12 * 3 = 9 instead of 36
+    // FIX:
+    // 23 * 3 (base4) = 33 instead of 201
+    // incrementation in decimal not viable,
+    // maybe need to use calc_add() for incrementation
     for (int i = iterator-1; i >= 0; i--) {
         int temp_ans = 0;
         int temp_product = 0;
         int temp_quotient = 0;
         int minuend_place_counter = 1;
         for (int j = iterator-1; j >= 0; j--) {
+            temp_product = 0;
             temp_product = num2[i] * num1[j];
             if (temp_quotient > 0) {
                 temp_product += temp_quotient;
             }
-            // temp_product properly assigned on each iteration
-            // printf("temp_product on iteration [%d][%d]: %d\n", i, j, temp_product);
+            printf("temp_product on iteration [%d][%d]: %d\n", i, j, temp_product);
             temp_quotient = 0;
-            if (temp_product > r) {
+            if (temp_product >= r) {
                 if (j < (iterator-1)) {
                     if (j == 0) {
-                        // printf("temp_ans: %d\n", temp_ans);
+                        printf("temp_ans: %d\n", temp_ans);
                         temp_ans += temp_product * minuend_place_counter;
-                        // printf("temp_product: %d\n", temp_product);
-                        // printf("minuend_place_counter: %d\n", minuend_place_counter);
+                        printf("temp_product: %d\n", temp_product);
+                        printf("minuend_place_counter: %d\n", minuend_place_counter);
                     } else {
                         temp_quotient = temp_product / r;
                         temp_ans += (temp_product - (r * temp_quotient)) * minuend_place_counter;
@@ -624,7 +634,7 @@ int calc_mul(int *num1, int *num2, int iterator, int r) {
                     temp_ans += temp_product - (r * temp_quotient);
                 }
             } else {
-                temp_ans += temp_product;
+                temp_ans += temp_product * minuend_place_counter;
             }
             minuend_place_counter *= r;
             printf("temp_ans on iteration [%d][%d]: %d\n", i, j, temp_ans);
