@@ -98,6 +98,8 @@ void radices_name(int num) {
         printf("Your number in Decimal: ");
     } else if (num == 16) {
         printf("Your number in Hexadecimal: ");
+    } else {
+        printf("Your number in base %d: ", num);
     }
 }
 
@@ -105,7 +107,6 @@ void radices_name(int num) {
 // ~~~~~~~~~~ DECIMAL TO RADICES CONVERTER ~~~~~~~~~~
 int decimal_to_radix(int decimal, int radix) {
     // TODO: Add functionality for numbers with fractionals
-    // FIX: WORKING ON THIS FUNCTION ~~~~~~~~~~~~~~~~~~~~~~
 
     /*
     printf("DECIMAL TO RADICES CONVERTER\n");
@@ -159,20 +160,16 @@ int decimal_to_radix(int decimal, int radix) {
 
         ans[num_length-index] = return_char(dividend);
 
-        radices_name(radix);
-
         if (neg_num == true) {
             printf("-");
         }
-        int multiplyer = 1;
-        for (int i = num_length-1; i >= 0; i--) {
-            test_ans += return_int(ans[i]) * multiplyer;
-            multiplyer *= 10;
+
+        for (int i = 0; i < num_length; i++) {
+            printf("%c", ans[i]);
         }
         printf("\n");
         persist = false;
     }
-    return test_ans;
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -241,7 +238,8 @@ void radix_to_decimal() {
             position -= 1;
         }
 
-        printf("Your number in decimal: %d\n", ans);
+        // printf("Your number in decimal: %d\n", ans);
+        printf("Test");
         persist = false;
     }
 }
@@ -586,25 +584,27 @@ void calc_sub(int *num1, int *num2, int iterator, int r) {
 }
 
 // CALCULATES PRODUCT OF 2 INTEGERS FROM BINARY TO BASE36
-int calc_mul(int *num1, int *num2, int iterator, int r) {
-    clear();
-    menu_banner();
+void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
+    clear();    menu_banner();
     int multiplyer_one = 0;
     int multiplyer_two = 0;
     int multiplicand;
 
+    // checks which array has the larger value
     for (int i = 0; i < iterator; i++) {
         multiplyer_one += num1[i];
     }
     for (int i = 0; i < iterator; i++) {
         multiplyer_two += num2[i];
     }
+    // sets value to multiplicand depending on length of each array
     if (multiplyer_one > multiplyer_two) {
         multiplicand = 1;
     } else {
         multiplicand = 0;
     }
 
+    // prints contents of num1 and num2
     for (int i = 0; i < iterator; i++) {
         printf("%d ", num1[i]);
     }
@@ -613,19 +613,31 @@ int calc_mul(int *num1, int *num2, int iterator, int r) {
         printf("%d ", num2[i]);
     }
     printf("\n");
-    printf("multiplyer_one: %d\n", multiplyer_one);
-    printf("multiplyer_two: %d\n", multiplyer_two);
-    printf("multiplicand: %d\n", multiplicand);
 
-    int final_product = 0;
+
+    // TODO: if muls == 1, only outer_array populated and printed w/ return_char()
+    // TODO: if muls == 2, outer_array & inner_array populated
+    //       calc_add() used for sum of both arrays
+    //       sum of arrays sent to array_sum and printed w/ return_char()
+    // TODO: if muls > 2, same process as above
+    //       once the 3rd multiplier is calculated the contents of array_sum is sent to outer_array
+    //       array_sum is emptied and the sum of outer_array and inner_array are sent to array_sum
+    //       the process repeats until array_sum is printed with return_char()
+    // TODO: ** account for added 0s for every multiplier > 1
+
+    int index = 1;
+    int *outer_array = malloc(index * sizeof *outer_array);
+    int *array_sum = malloc(index * sizeof *array_sum);
+
     int ans_place_counter = 1;
 
-    // FIX: 3 * 23 (base4) = 33 instead of 201
-    for (int i = iterator-1; i >= 0; i--) {
+    // Currently will only interate as many times as there are multipliers
+    for (int i = iterator-1; i >= (iterator-muls); i--) {
         int temp_ans = 0;
         int temp_product = 0;
         int temp_quotient = 0;
-        int minuend_place_counter = 1;
+        int multiplicand_place_counter = 1;
+        int *inner_array = malloc(index * sizeof *inner_array);
         for (int j = iterator-1; j >= 0; j--) {
             if (multiplicand == 1) {
                 temp_product = num2[i] * num1[j];
@@ -640,27 +652,26 @@ int calc_mul(int *num1, int *num2, int iterator, int r) {
             if (temp_product >= r) {
                 if (j < (iterator-1)) {
                     if (j == 0) {
-                        temp_ans += temp_product * minuend_place_counter;
+                        temp_ans += temp_product * multiplicand_place_counter;
                     } else {
                         temp_quotient = temp_product / 10;
-                        temp_ans += (temp_product - (10 * temp_quotient)) * minuend_place_counter;
+                        temp_ans += (temp_product - (10 * temp_quotient)) * multiplicand_place_counter;
                     }
                 } else {
                     temp_quotient = temp_product / 10;
                     temp_ans += temp_product - (10 * temp_quotient);
                 }
             } else {
-                temp_ans += temp_product * minuend_place_counter;
+                temp_ans += temp_product * multiplicand_place_counter;
             }
-            minuend_place_counter *= 10;
+            multiplicand_place_counter *= 10;
         }
         if (i < (iterator-1)) {
             temp_ans *= ans_place_counter;
         }
-        final_product += temp_ans;
-        ans_place_counter *= r;
+        // final_product += temp_ans;
+        ans_place_counter *= 10;
     }
-    return final_product;
 }
 
 void calc_div(int *num1, int *num2) {
@@ -766,8 +777,8 @@ void radices_calculator() {
         } else if (op == '-') {
             calc_sub(num1_integers, num2_integers, num1_integers_len, radix);
         } else if (op == '*') {
-            int calc_mul_ans = calc_mul(num1_integers, num2_integers, num1_integers_len, radix);
-            printf("%d\n", calc_mul_ans);
+            int multipliers = (num1_integers_len - len_diff);
+            calc_mul(num1_integers, num2_integers, num1_integers_len, radix, multipliers);
         } else if (op == '/') {
             calc_div(num1_integers, num2_integers);
         } else {
@@ -807,8 +818,8 @@ int main() {
             int r;
             printf("Enter your radix: ");
             scanf("%d", &r);
-            int ans = decimal_to_radix(dec, r);
-            printf("Your number in base %d: %d\n", r, ans);
+            radices_name(r);
+            decimal_to_radix(dec, r);
             menu_persist = false;
         } else if (strcmp(choice, "2") == 0) {
             radix_to_decimal();
