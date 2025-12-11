@@ -165,16 +165,14 @@ int decimal_to_radix(int decimal, int radix, bool int_return) {
             printf("-");
         }
 
-        int returned_int = 0;
-        // FIX: NOT RETURNING CORRECT INTEGER
+        int returned_int;
         if (int_return == true) {
-            for (int i = 0; i < num_length; i++) {
-                if (i == 0) {
-                    returned_int += return_int(ans[i]) * 10;
-                } else {
-                    returned_int += return_int(ans[i]);
-                }
+            if (return_int(ans[1]) > 9) {
+                returned_int = return_int(ans[0]) * 100;
+            } else {
+                returned_int = return_int(ans[0]) * 10;
             }
+            returned_int += return_int(ans[1]);
             return returned_int;
         } else {
             for (int i = 0; i < num_length; i++) {
@@ -646,9 +644,10 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
     // int ans_place_counter = 1;
 
     // Currently will only interate as many times as there are multipliers
+    int counter = 0;
+    int temp_quotient = 0;
     for (int i = iterator-1; i >= (iterator-muls); i--) {
         int temp_product;
-        int temp_quotient = 0;
         // int multiplicand_place_counter = 1;
         int *inner_array = malloc(index * sizeof *inner_array);
         int temp_conversion;
@@ -662,13 +661,25 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                 temp_product += temp_quotient;
                 temp_quotient = 0;
             }
+            // FIX: FA * 2 should be 1F4 not 54
+            //      decimal_to_radix() returning incorrect integer (I think)
             printf("temp_product on iteration [i: %d][j: %d]: %d\n", i, j, temp_product);
+            printf("decimal_to_radix(temp_product, r, false): ");
+            decimal_to_radix(temp_product, r, false);
+            printf("\n");
             if (temp_product >= r) {
+                // FIX: find a way to increment a counter to determine
+                //      how to divide temp_conversion to get temp_quotient
                 temp_conversion = decimal_to_radix(temp_product, r, true);
                 printf("temp_conversion on iteration %d: %d\n", j, temp_conversion);
-                temp_quotient = temp_conversion / 10;
+                if (temp_conversion > 99) {
+                    temp_quotient = temp_conversion / 100;
+                    temp_product = temp_conversion - 100;
+                } else {
+                    temp_quotient = temp_conversion / 10;
+                    temp_product = temp_conversion - (temp_quotient * 10);
+                }
                 printf("temp_quotient on iteration %d: %d\n", j, temp_quotient);
-                temp_product = temp_conversion - (temp_quotient * 10);
                 printf("temp_product: %d\n", temp_product);
                 outer_array[j] = temp_product;
             } else {
@@ -678,6 +689,9 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
         printf("\n");
     }
     printf("Product: ");
+    if (temp_quotient > 0) {
+        printf("%d", temp_quotient);
+    }
     for (int i = 0; i < index; i++) {
         printf("%c", return_char(outer_array[i]));
     }
