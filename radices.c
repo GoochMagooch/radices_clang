@@ -599,16 +599,20 @@ void calc_sub(int *num1, int *num2, int iterator, int r) {
 void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
     clear();
     menu_banner();
+
+    // checks which array is larger for later calculations
     int multiplyer_one = 0;
     int multiplyer_two = 0;
     int multiplicand;
-
-    // checks which array has the larger value
-    for (int i = 0; i < iterator; i++) {
-        multiplyer_one += num1[i];
+    int exponential = 1;
+    for (int i = iterator-1; i >= 0; i--) {
+        multiplyer_one += num1[i] * exponential;
+        exponential = exponential * 10;
     }
-    for (int i = 0; i < iterator; i++) {
-        multiplyer_two += num2[i];
+    exponential = 1;
+    for (int i = iterator-1; i >= 0; i--) {
+        multiplyer_two += num2[i] * exponential;
+        exponential = exponential * 10;
     }
     // sets value to multiplicand depending on length of each array
     if (multiplyer_one > multiplyer_two) {
@@ -627,9 +631,7 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
     }
     printf("\n");
 
-    // TODO: if muls == 2, outer_array_one & inner_array populated
-    //       calc_add() used for sum of both arrays
-    //       sum of arrays sent to array_sum and printed w/ return_char()
+    // TODO: sum of arrays sent to array_sum and printed w/ return_char()
     // TODO: if muls > 2, same process as above
     //       once the 3rd multiplier is calculated the contents of array_sum is sent to outer_array
     //       array_sum is emptied and the sum of outer_array and inner_array are sent to array_sum
@@ -641,46 +643,23 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
     int *outer_array_two = malloc(index * sizeof *outer_array_two);
     int *inner_array = malloc(index * sizeof *inner_array);
     int *array_sum = malloc(index * sizeof *array_sum);
-
     int increment_count = muls;
-
-    // int ans_place_counter = 1;
 
     // Currently will only interate as many times as there are multipliers
     int counter = 0;
     int temp_quotient = 0;
     int zero_count;
     bool array_w_quotient = false;
+    printf("iterator: %d\n", iterator);
+    printf("muls: %d\n", muls);
     for (int i = iterator-1; i >= (iterator-muls); i--) {
         inner_array = realloc(inner_array, index * sizeof *inner_array);
         temp_quotient = 0;
-        /*
-        if (index > iterator) {
-            // TODO: populate outer_array_one
-            zero_count = iterator - index;
-            if (i % 2 == 0) {
-                realloc(outer_array_one, index * sizeof *outer_array_one);
-            } else {
-                realloc(outer_array_two, index * sizeof *outer_array_two);
-                for (int i = 0; i < index; i++) {
-                    if (i < zero_count) {
-                        outer_array_two[i] = 0;
-                    } else {
-                        outer_array_two[i] = outer_array_one[i-zero_count];
-                    }
-                }
-            }
-            // TODO: repopulate inner_array with trailing 0s
-            for (int i = 0; i < index; i++) {
-
-            }
-        }
-        */
         int temp_product;
         // int multiplicand_place_counter = 1;
         int temp_conversion;
-        // FIX: j needs to iterate according to index, not iterator
-        //      all arrays after first iteration will be improperly populated
+        // FIX: j needs to iterate according to index, not iterator all 
+        // arrays after first iteration will be improperly populated (maybe)
         for (int j = iterator-1; j >= 0; j--) {
             // outer_array_one = realloc(outer_array_one, index * sizeof *outer_array_one);
             if (multiplicand == 1) {
@@ -692,10 +671,9 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                 temp_product += temp_quotient;
                 temp_quotient = 0;
             }
-            printf("temp_product on iteration [i: %d][j: %d]: %d\n", i, j, temp_product);
+            printf("\ntemp_product on iteration [i: %d][j: %d]: %d\n", i, j, temp_product);
             printf("decimal_to_radix(temp_product, r, false): ");
             decimal_to_radix(temp_product, r, false);
-            printf("\n");
             if (temp_product >= r) {
                 temp_conversion = decimal_to_radix(temp_product, r, true);
                 printf("temp_conversion on iteration %d: %d\n", j, temp_conversion);
@@ -711,9 +689,16 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                 if (muls == 1) {
                     outer_array_one[j] = temp_product;
                 } else if (muls == 2) {
-                    // FIX: 255 * 11, 12, 13 correct, 255 * 14 and above incorrect
                     if (i == (iterator-1)) {
-                        outer_array_one[j] = temp_product;
+                        if (j == 0) {
+                            // FIX: outer_array_one should end up as 2295, ending up as 2250
+                            outer_array_one = realloc(outer_array_one, (index+1) * sizeof *outer_array_one);
+                            outer_array_one[j+1] = temp_product;
+                            outer_array_one[j] = temp_quotient;
+                        } else {
+                            outer_array_one[j] = temp_product;
+                            printf("outer_array_one[%d]: %d\n", j, outer_array_one[j]);
+                        }
                     } else {
                         inner_array[j] = temp_product;
                     }
@@ -725,7 +710,6 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                 if (muls == 1) {
                     outer_array_one[j] = temp_product;
                 } else if (muls == 2) {
-                    // FIX: WORKING HERE
                     if (i == (iterator-1)) {
                         outer_array_one[j] = temp_product;
                     } else {
@@ -741,9 +725,11 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
             index++;
         }
         increment_count--;
-        if (temp_quotient > 0) {
+        if (temp_quotient > 0 && muls == 2) {
+            // add trailing 0s, according to number of multipliers
+            // TODO: reallocate arrays to include all digits, plus trailing 0's
             // index++;
-            printf("test\n");
+            printf("adding trailing 0s to outer_array_one...\n");
             outer_array_two = realloc(outer_array_two, index * sizeof *outer_array_two);
             for (int i = 0; i < index; i++) {
                 if (i != 0) {
@@ -755,6 +741,13 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
             array_w_quotient = true;
             // index--;
         }
+        // prints outer_array_one before second outer loop
+        // FIX: I think the problem is that outer_array_one is not being reallocated properly and adding extra 0
+        printf("outer_array_one before second outer loop: ");
+        for (int i = 0; i < index; i++) {
+            printf("%d ", outer_array_one[i]);
+        }
+        printf("\n");
     }
     if (muls == 1) {
         printf("Product: ");
@@ -766,7 +759,8 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
         }
         printf("\n");
     } else if (muls == 2) {
-        // FIX: ALSO WORKING HERE
+        // FIX: STILL NEED A WAY TO INCLUDE CARRY DIGIT FROM calc_add()
+        //      255 * 99 not triggering array_w_quotient the way 255 * 14 does
         if (array_w_quotient == true) {
             printf("outer_array_two with temp_quotient: ");
             for (int i = 0; i < index; i++) {
@@ -774,6 +768,7 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
             }
             printf("\n");
         } else {
+            printf("adding trailing 0s to outer_array_two...\n");
             outer_array_two = realloc(outer_array_two, index * sizeof *outer_array_two);
             printf("index: %d\n", index);
             for (int i = 0; i < index; i++) {
@@ -784,25 +779,22 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                 }
             }
         }
-        /*
-        printf("outer_array_one (should be 2 5 5): ");
+        printf("outer_array_one: ");
         for (int i = 0; i < index; i++) {
             printf("%d ", outer_array_one[i]);
         }
-        printf("\nouter_array_two (should be 0 2 5 5): ");
+        printf("\nouter_array_two: ");
         for (int i = 0; i < index; i++) {
             printf("%d ", outer_array_two[i]);
         }
-        printf("\ninner_array (should be 2 5 5 0): ");
+        printf("\ninner_array: ");
         for (int i = 0; i < index; i++) {
             printf("%d ", inner_array[i]);
         }
-        */
         int carry = 2;
         int final_product_arr[index];
         calc_add(outer_array_two, inner_array, index, r, true, final_product_arr, &carry);
         if (carry == 1) {
-            // FIX: INCLUDE CARRY OVER
             printf("\nProduct with carry: ");
             int final_product_arr_carry[index];
             calc_add(outer_array_two, inner_array, index, r, true, final_product_arr_carry, &carry);
@@ -817,6 +809,9 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
             }
             printf("\n");
         }
+    } else {
+        // TODO: muls > 2
+        printf("muls > 2 coming soon...");
     }
 }
 
