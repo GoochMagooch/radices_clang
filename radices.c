@@ -738,6 +738,16 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                     outer_array_two[i] = 1;
                 }
             }
+            // FIX:outer_array_one populated with 2250 instead of 2295
+            printf("outer_array_one: ");
+            for (int i = 0; i < index; i++) {
+                printf("%d", outer_array_one[i]);
+            }
+            printf("\nouter_array_two after added trailing 0s, iteration[%d]: ", i);
+            for (int i = 0; i < index; i++) {
+                printf("%d", outer_array_two[i]);
+            }
+            printf("\n");
             array_w_quotient = true;
             // index--;
         }
@@ -768,7 +778,7 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
             }
             printf("\n");
         } else {
-            printf("adding trailing 0s to outer_array_two...\n");
+            printf("\nadding trailing 0s to outer_array_two...\n");
             outer_array_two = realloc(outer_array_two, index * sizeof *outer_array_two);
             printf("index: %d\n", index);
             for (int i = 0; i < index; i++) {
