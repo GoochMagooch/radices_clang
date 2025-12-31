@@ -672,9 +672,10 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                 temp_quotient = 0;
             }
             printf("\ntemp_product on iteration [i: %d][j: %d]: %d\n", i, j, temp_product);
-            printf("decimal_to_radix(temp_product, r, false): ");
-            decimal_to_radix(temp_product, r, false);
+            // printf("decimal_to_radix(temp_product, r, false): ");
+            // decimal_to_radix(temp_product, r, false);
             if (temp_product >= r) {
+                printf("temp_product >= r\n");
                 temp_conversion = decimal_to_radix(temp_product, r, true);
                 printf("temp_conversion on iteration %d: %d\n", j, temp_conversion);
                 if (temp_conversion > 99) {
@@ -691,10 +692,14 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                 } else if (muls == 2) {
                     if (i == (iterator-1)) {
                         if (j == 0) {
-                            // FIX: outer_array_one should end up as 2295, ending up as 2250
+                            // FIX: PROBLEM AREA 1 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                            //      outer_array_one should end up as 2295, ending up as 2250
+                            //      inner loop not running enough times to add extra digits
+                            //      instead of 5, 9, 2 and then 2 the array is getting 5, 9, 2 and then a 0 out of nowhere (I think)
                             outer_array_one = realloc(outer_array_one, (index+1) * sizeof *outer_array_one);
                             outer_array_one[j+1] = temp_product;
                             outer_array_one[j] = temp_quotient;
+                            printf("outer_array_one[%d]: %d\n", j, outer_array_one[j]);
                         } else {
                             outer_array_one[j] = temp_product;
                             printf("outer_array_one[%d]: %d\n", j, outer_array_one[j]);
@@ -707,6 +712,7 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                     printf("Feature coming soon...");
                 }
             } else {
+                printf("!temp_product >= r\n");
                 if (muls == 1) {
                     outer_array_one[j] = temp_product;
                 } else if (muls == 2) {
@@ -728,6 +734,8 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
         if (temp_quotient > 0 && muls == 2) {
             // add trailing 0s, according to number of multipliers
             // TODO: reallocate arrays to include all digits, plus trailing 0's
+            // FIX: PROBLEM AREA 2 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            //      First multiplier calculations don't need a trailing 0, but this condition is triggered anyway
             // index++;
             printf("adding trailing 0s to outer_array_one...\n");
             outer_array_two = realloc(outer_array_two, index * sizeof *outer_array_two);
@@ -738,7 +746,6 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                     outer_array_two[i] = 1;
                 }
             }
-            // FIX:outer_array_one populated with 2250 instead of 2295
             printf("outer_array_one: ");
             for (int i = 0; i < index; i++) {
                 printf("%d", outer_array_one[i]);
@@ -752,7 +759,6 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
             // index--;
         }
         // prints outer_array_one before second outer loop
-        // FIX: I think the problem is that outer_array_one is not being reallocated properly and adding extra 0
         printf("outer_array_one before second outer loop: ");
         for (int i = 0; i < index; i++) {
             printf("%d ", outer_array_one[i]);
