@@ -694,9 +694,28 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                         if (j == 0) {
                             // FIX: PROBLEM AREA 1 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                             //      outer_array_one should end up as 2295, ending up as 2250
-                            //      inner loop not running enough times to add extra digits
-                            //      instead of 5, 9, 2 and then 2 the array is getting 5, 9, 2 and then a 0 out of nowhere (I think)
+                            //
+                            //      the 9 at position [2] is being replaced by the digit in position [3]
+                            //      meanwhile a 0 is added to position [3] when trailing 0s are added
+                            //      then [j+1] is REPLACED with temp_product (2) resulting in 2250
+                            //
+                            //      Move the reallocation logic to a different part of the function?
+
+                            // FIX: outer_array_one prints as 0 9 5, only 3 digits instead of the desired 4
+                            //      and the same even after reallocation
+                            printf("outer_array_one before reallocation: ");
+                            for (int i = 0; i < index; i++) {
+                                printf(" %d", outer_array_one[i]);
+                            }
+                            printf("\n");
                             outer_array_one = realloc(outer_array_one, (index+1) * sizeof *outer_array_one);
+                            printf("outer_array_one after reallocation: ");
+                            for (int i = 0; i < index; i++) {
+                                printf("%d ", outer_array_one[i]);
+                            }
+                            printf("\n");
+                            // FIX: length of outer_array_one 2?
+                            printf("temp_product being assigned to [j+1]: %d\n", temp_product);
                             outer_array_one[j+1] = temp_product;
                             outer_array_one[j] = temp_quotient;
                             printf("outer_array_one[%d]: %d\n", j, outer_array_one[j]);
@@ -705,6 +724,7 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                             printf("outer_array_one[%d]: %d\n", j, outer_array_one[j]);
                         }
                     } else {
+                        // FIX: work on logic to properly allocate digits to inner_array
                         inner_array[j] = temp_product;
                     }
                 } else {
