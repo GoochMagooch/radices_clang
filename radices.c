@@ -708,6 +708,8 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                                 printf(" %d", outer_array_one[i]);
                             }
                             printf("\n");
+                            printf("index: %d\n", index);
+                            // FIX: realloc doesn't seem to be reallocating outer_array_one to (index+1)
                             outer_array_one = realloc(outer_array_one, (index+1) * sizeof *outer_array_one);
                             printf("outer_array_one after reallocation: ");
                             for (int i = 0; i < index; i++) {
