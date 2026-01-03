@@ -691,13 +691,12 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                     outer_array_one[j] = temp_product;
                 } else if (muls == 2) {
                     if (i == (iterator-1)) {
-                        if (j == 0) {
+                        if (j == 0) { // FIX: PROBLEM AREA 1 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                             // TODO: POSSIBLE FIX - Populate arrays backwards so when reallocating array size 
                             //       I can add any extra digits if needed. Then once the time comes to add the 
                             //       arrays together, I can populate new arrays, with the digits in the existing 
-                            //       arrays, but in reverse order ???
+                            //       arrays, but in reverse order (line 807) ???
 
-                            // FIX: PROBLEM AREA 1 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                             //      outer_array_one should end up as 2295, at this point it is ending up as 095
                             //      outer_array_one is already 095 once this condition is true, so it's not this 
                             //      area that is responsible for populating outer_array_one with 095
