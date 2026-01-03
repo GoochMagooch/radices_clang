@@ -692,8 +692,15 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                 } else if (muls == 2) {
                     if (i == (iterator-1)) {
                         if (j == 0) {
+                            // TODO: POSSIBLE FIX - Populate arrays backwards so when reallocating array size 
+                            //       I can add any extra digits if needed. Then once the time comes to add the 
+                            //       arrays together, I can populate new arrays, with the digits in the existing 
+                            //       arrays, but in reverse order ???
+
                             // FIX: PROBLEM AREA 1 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                            //      outer_array_one should end up as 2295, ending up as 2250
+                            //      outer_array_one should end up as 2295, at this point it is ending up as 095
+                            //      outer_array_one is already 095 once this condition is true, so it's not this 
+                            //      area that is responsible for populating outer_array_one with 095
                             //
                             //      the 9 at position [2] is being replaced by the digit in position [3]
                             //      meanwhile a 0 is added to position [3] when trailing 0s are added
@@ -710,10 +717,11 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                             printf("\n");
                             printf("index: %d\n", index);
                             // FIX: realloc doesn't seem to be reallocating outer_array_one to (index+1)
+                            //      it turns 095 into 0950
                             outer_array_one = realloc(outer_array_one, (index+1) * sizeof *outer_array_one);
-                            printf("outer_array_one after reallocation: ");
-                            for (int i = 0; i < index; i++) {
-                                printf("%d ", outer_array_one[i]);
+                            printf("outer_array_one after reallocation: \n");
+                            for (int i = 0; i < index+1; i++) {
+                                printf("outer_array_one at index %d: %d\n", i, outer_array_one[i]);
                             }
                             printf("\n");
                             // FIX: length of outer_array_one 2?
