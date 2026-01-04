@@ -718,6 +718,8 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                             // FIX: realloc doesn't seem to be reallocating outer_array_one to (index+1)
                             //      it turns 095 into 0950
                             outer_array_one = realloc(outer_array_one, (index+1) * sizeof *outer_array_one);
+                            outer_array_one[j+1] = temp_product;
+                            outer_array_one[j] = temp_quotient;
                             printf("outer_array_one after reallocation: \n");
                             for (int i = 0; i < index+1; i++) {
                                 printf("outer_array_one at index %d: %d\n", i, outer_array_one[i]);
@@ -725,6 +727,7 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                             printf("\n");
                             // FIX: length of outer_array_one 2?
                             printf("temp_product being assigned to [j+1]: %d\n", temp_product);
+                            // FIX: these 2 assignments specifically create 2250, instead of 2295
                             outer_array_one[j+1] = temp_product;
                             outer_array_one[j] = temp_quotient;
                             printf("outer_array_one[%d]: %d\n", j, outer_array_one[j]);
