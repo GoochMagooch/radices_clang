@@ -692,10 +692,16 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                 } else if (muls == 2) {
                     if (i == (iterator-1)) {
                         if (j == 0) { // FIX: PROBLEM AREA 1 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                            // TODO: POSSIBLE FIX - Populate arrays backwards so when reallocating array size 
+                            // TODO: POSSIBLE FIX 1 - Populate arrays backwards so when reallocating array size 
                             //       I can add any extra digits if needed. Then once the time comes to add the 
                             //       arrays together, I can populate new arrays, with the digits in the existing 
                             //       arrays, but in reverse order (line 807) ???
+                            //
+                            // TODO: POSSIBLE FIX 2 - Change the inner loop to iterate forwards, so that I can 
+                            //       reallocate arrays more effectively. If muls == 2 and there's an extra digit 
+                            //       at the end of the calculations then reallocate another array beginning with a 0 
+                            //       and populating the rest of it with the remaining digits
+                            //       For the second array just populate with all digits and then add a trailing 0
 
                             //      outer_array_one should end up as 2295, at this point it is ending up as 095
                             //      outer_array_one is already 095 once this condition is true, so it's not this 
