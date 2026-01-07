@@ -702,6 +702,9 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                             //       at the end of the calculations then reallocate another array beginning with a 0 
                             //       and populating the rest of it with the remaining digits
                             //       For the second array just populate with all digits and then add a trailing 0
+                            //       A problem is that there's a reason I iterate backwards, which is to multiply each 
+                            //       multiplicand digit by the appropriate multiplier. I will continue to iterate backwards, 
+                            //       but that doesn't mean I have to populate arrays backwards
 
                             //      outer_array_one should end up as 2295, at this point it is ending up as 095
                             //      outer_array_one is already 095 once this condition is true, so it's not this 
