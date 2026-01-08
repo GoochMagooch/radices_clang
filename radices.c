@@ -743,6 +743,11 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                             printf("temp_product_count: %d\n", temp_product_count);
                             temp_product_arr[temp_product_count] = temp_product;
                             temp_product_count++;
+                            if (temp_quotient > 0) {
+                                temp_product_arr[temp_product_count] = temp_quotient;
+                            } else {
+                                temp_product_arr[temp_product_count] = 0;
+                            }
                             printf("temp_product_count: %d\n", temp_product_count);
                             printf("temp_product_arr: ");
                             for (int i = 0; i < index; i++) {
