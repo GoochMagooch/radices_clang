@@ -724,41 +724,30 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                             }
                             printf("\n");
                             printf("index: %d\n", index);
-                            outer_array_one = realloc(outer_array_one, (index+1) * sizeof *outer_array_one);
-                            outer_array_one[j+1] = temp_product;
-                            outer_array_one[j] = temp_quotient;
-                            printf("outer_array_one after reallocation: \n");
-                            for (int i = 0; i < index+1; i++) {
-                                printf("outer_array_one at index %d: %d\n", i, outer_array_one[i]);
-                            }
-                            printf("\n");
 
-                            printf("temp_product being assigned to [j+1]: %d\n", temp_product);
-
-                            outer_array_one[j+1] = temp_product;
-                            outer_array_one[j] = temp_quotient;
-                            printf("outer_array_one[%d]: %d\n", j, outer_array_one[j]);
-                            // TODO: PART OF POSSIBLE FIX 2
-                            printf("PART OF POSSIBLE FIX 2\n");
-                            printf("temp_product_count: %d\n", temp_product_count);
-                            temp_product_arr[temp_product_count] = temp_product;
+                            outer_array_one[temp_product_count] = temp_product;
                             temp_product_count++;
                             if (temp_quotient > 0) {
-                                temp_product_arr[temp_product_count] = temp_quotient;
+                                outer_array_one[temp_product_count] = temp_quotient;
                             } else {
-                                temp_product_arr[temp_product_count] = 0;
+                                outer_array_one[temp_product_count] = 0;
                             }
                             printf("temp_product_count: %d\n", temp_product_count);
                             printf("temp_product_arr: ");
                             for (int i = 0; i < index; i++) {
-                                printf(" %d", temp_product_arr[i]);
+                                printf(" %d", outer_array_one[i]);
                             }
                             printf("\n");
 
+                            printf("outer_array_one after reallocation: \n");
+                            for (int i = 0; i < index; i++) {
+                                printf("outer_array_one at index %d: %d\n", i, outer_array_one[i]);
+                            }
+                            printf("\n");
                         } else {
                             // TODO: PART OF POSSIBLE FIX 2
-                            outer_array_one[j] = temp_product;
-                            temp_product_arr[temp_product_count] = temp_product;
+                            // adds temp_product to all spaces, except temp_product_arr[-1]
+                            outer_array_one[temp_product_count] = temp_product;
                             temp_product_count++;
                             printf("outer_array_one[%d]: %d\n", j, outer_array_one[j]);
                         }
