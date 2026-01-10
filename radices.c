@@ -709,14 +709,6 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                             //       multiplicand digit by the appropriate multiplier. I will continue to iterate backwards, 
                             //       but that doesn't mean I have to populate arrays backwards
                             //       Create temporary array that contains all calculation digits to populate future arrays with?
-                            // TODO: NOTES
-                            //       outer_array_one should end up as 2295, at this point it is ending up as 095
-                            //       outer_array_one is already 095 once this condition is true, so it's not this 
-                            //       area that is responsible for populating outer_array_one with 095
-                            //       The 9 at position [2] is being replaced by the digit in position [3]
-                            //       meanwhile a 0 is added to position [3] when trailing 0s are added
-                            //       then [j+1] is REPLACED with temp_product (2) resulting in 2250
-                            //       Move the reallocation logic to a different part of the function?
 
                             printf("outer_array_one before reallocation: ");
                             for (int i = 0; i < index; i++) {
