@@ -764,6 +764,7 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                         }
                     } else {
                         // TODO: work on logic to properly allocate digits to inner_array
+                        // FIX: inner_array ending up as 29500 instead of 22950
                         inner_array[j] = temp_product;
                     }
                 } else {
@@ -785,7 +786,25 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                     printf("Feature coming soon...");
                 }
             }
+        } // END OF INNER LOOP
+        printf("temp_product_arr after inner loop: ");
+        for (int i = 0; i < index; i++) {
+            printf("%d ", temp_product_arr[i]);
         }
+        printf("\n");
+        for (int i = 0; i < index; i++) {
+            outer_array_one[index-i-1] = temp_product_arr[i];
+        }
+        printf("TESTING outer_array_one POPULATION: ");
+        for (int i = 0; i < index; i++) {
+            printf("%d ", outer_array_one[i]);
+        }
+        printf("\nindex: %d\n", index);
+        printf("inner_array: ");
+        for (int i = 0; i < index; i++) {
+            printf("%d ", inner_array[i]);
+        }
+        printf("\n");
 
         if (muls > 1 && increment_count > 1) {
             index++;
@@ -822,7 +841,9 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
             printf("%d ", outer_array_one[i]);
         }
         printf("\n");
-    }
+    } // END OF OUTER LOOP
+
+
     if (muls == 1) {
         printf("Product: ");
         if (temp_quotient > 0) {
