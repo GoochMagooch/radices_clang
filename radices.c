@@ -689,33 +689,16 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                     temp_quotient = temp_conversion / 10;
                     temp_product = temp_conversion - (temp_quotient * 10);
                 }
-                printf("temp_quotient on iteration %d: %d\n", j, temp_quotient);
                 printf("temp_product: %d\n", temp_product);
+                if (temp_quotient > 0) {
+                    printf("temp_quotient: %d\n", temp_quotient);
+                }
                 if (muls == 1) {
                     outer_array_one[j] = temp_product;
                 } else if (muls == 2) {
                     if (i == (iterator-1)) {
                         if (j == 0) { // FIX: PROBLEM AREA 1 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                            // TODO: POSSIBLE FIX 1 - Populate arrays backwards so when reallocating array size 
-                            //       I can add any extra digits if needed. Then once the time comes to add the 
-                            //       arrays together, I can populate new arrays, with the digits in the existing 
-                            //       arrays, but in reverse order (line 807) ???
-                            // TODO: POSSIBLE FIX 2 - Change the inner loop to iterate forwards, so that I can 
-                            //       reallocate arrays more effectively. If muls == 2 and there's an extra digit 
-                            //       at the end of the calculations then reallocate another array beginning with a 0 
-                            //       and populating the rest of it with the remaining digits
-                            //       For the second array just populate with all digits and then add a trailing 0
-                            //       A problem is that there's a reason I iterate backwards, which is to multiply each 
-                            //       multiplicand digit by the appropriate multiplier. I will continue to iterate backwards, 
-                            //       but that doesn't mean I have to populate arrays backwards
-                            //       Create temporary array that contains all calculation digits to populate future arrays with?
-
-                            printf("outer_array_one before reallocation: ");
-                            for (int i = 0; i < index; i++) {
-                                printf(" %d", outer_array_one[i]);
-                            }
-                            printf("\n");
-                            printf("index: %d\n", index);
+                            // TODO: Properly add trailing 0 when applicable
 
                             outer_array_one[temp_product_count] = temp_product;
                             temp_product_count++;
@@ -724,21 +707,13 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                             } else {
                                 outer_array_one[temp_product_count] = 0;
                             }
-                            printf("temp_product_count: %d\n", temp_product_count);
-                            printf("temp_product_arr: ");
-                            for (int i = 0; i < index; i++) {
-                                printf(" %d", outer_array_one[i]);
-                            }
-                            printf("\n");
 
-                            printf("outer_array_one after reallocation: \n");
                             for (int i = 0; i < index; i++) {
                                 printf("outer_array_one at index %d: %d\n", i, outer_array_one[i]);
                             }
                             printf("\n");
                         } else {
-                            // TODO: PART OF POSSIBLE FIX 2
-                            // adds temp_product to all spaces, except temp_product_arr[-1]
+                            // adds temp_product to all spaces, except outer_array_one[-1]
                             outer_array_one[temp_product_count] = temp_product;
                             temp_product_count++;
                             printf("outer_array_one[%d]: %d\n", j, outer_array_one[j]);
@@ -768,6 +743,7 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                 }
             }
         } // END OF INNER LOOP
+        // TODO: check this feature
         printf("temp_product_arr after inner loop: ");
         for (int i = 0; i < index; i++) {
             printf("%d ", temp_product_arr[i]);
