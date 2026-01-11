@@ -697,8 +697,10 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
                     outer_array_one[j] = temp_product;
                 } else if (muls == 2) {
                     if (i == (iterator-1)) {
-                        if (j == 0) { // FIX: PROBLEM AREA 1 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                        if (j == 0) {
                             // TODO: Properly add trailing 0 when applicable
+                            // if inner_array contains a number of digits > outer_array_one then outer_array_one will
+                            // need a leading 0 to uphold array sizes for calc_add()
 
                             outer_array_one[temp_product_count] = temp_product;
                             temp_product_count++;
