@@ -774,6 +774,8 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
             // TODO: reallocate arrays to include all digits, plus trailing 0's
             // FIX: PROBLEM AREA 2 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             //      First multiplier calculations don't need a trailing 0, but this condition is triggered anyway
+            //      This is happening because temp_quotient is retaining value after first inner loop.
+            //      It only needs to trigger upon the second inner loop iteration, if temp_quotient > 0
             printf("adding trailing 0s to outer_array_one...\n");
             outer_array_two = realloc(outer_array_two, index * sizeof *outer_array_two);
             for (int i = 0; i < index; i++) {
