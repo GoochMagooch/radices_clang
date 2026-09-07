@@ -987,7 +987,7 @@ void calc_mul(int *num1, int *num2, int iterator, int r, int muls) {
 }
 
 // XXX: START OF DIVISION FUNCTION
-void calc_div(int *num1, int *num2, int iterator, int r) {
+void calc_div(int *dividend, int *divisor, int iterator, int r) {
     // THERE WILL BE A CHECK TO SEE IF num2 IS LARGER THAN num1
 
     // The mechanics of long division are identical across every positional number system (radix).
@@ -1000,9 +1000,9 @@ void calc_div(int *num1, int *num2, int iterator, int r) {
     // Regardless of the base, long division always satisfies this exact formula:
     //   Dividend = (Quotient * Divisor) + Remainder, where 0 <= Remainder < Divisor
     int quotient = 0;
-    int divisor = 0; // the digits in num2
+    int divisor_temp = 0; // the digits in num2
     int remainder = 0;
-    int dividend = quotient * divisor + remainder;
+    int dividend_temp = quotient * divisor_temp + remainder;
 
     // A fraction terminates if and only if the prime factors of the divisor in lowest terms divide
     //     the base b. Because 2 only has the prime factor 2, binary fractions only terminate when
@@ -1022,12 +1022,14 @@ void calc_div(int *num1, int *num2, int iterator, int r) {
     // BASE FIRST DRAFT OF CODE ON 101(2) / 10(2)
     clear();
     menu_banner();
+    printf("DIVIDEND: ")
     for (int i = 0; i < iterator; i++) {
-        printf("%d ", num1[i]);
+        printf("%d ", dividend[i]);
     }
     printf("\n");
+    printf("DIVISOR: ");
     for (int i = 0; i < iterator; i++) {
-        printf("%d ", num2[i]);
+        printf("%d ", divisor[i]);
     }
     printf("\n");
 
@@ -1048,17 +1050,6 @@ void calc_div(int *num1, int *num2, int iterator, int r) {
     // count the number of dividend digits
     // set a counter to count the number of times the divisor is attempting to fit within the dividend (dividend_digits - 1)
     int multiplier = 1;
-    // if the divisor cannot fit inside the dividend 
-    printf("DIVIDEND: ");
-    for (int i = 0; i < iterator; i++) {
-        printf("%d ", num1[i]);
-    }
-    printf("\n");
-    printf("DIVISOR: ");
-    for (int i = 0; i < iterator; i++) {
-        printf("%d ", num2[i]);
-    }
-    printf("\n");
 
     // XXX: PSEUDOCODE
     int **dividend_digits;
