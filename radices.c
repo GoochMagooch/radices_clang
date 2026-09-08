@@ -1052,12 +1052,11 @@ void calc_div(int *dividend, int *divisor, int iterator, int r) {
     int multiplier = 1;
 
     // XXX: PSEUDOCODE
-    int **dividend_digits;
-    dividend_digits = malloc(iterator * sizeof *dividend_digits); // iterator may not be the number of dividend digits
-    int temp_dividend = dividend_digits[0];
-    if (calc_mul(divisor, 1) > temp_dividend) { // NOTE: IN RADIX
+    // int divisor_integer = calculation to turn divisor array into a single whole integer
+    // int temp_dividend = dividend[0];
+    // if (divisor_integer > temp_dividend) { // NOTE: IN RADIX
         // calculation to combine next element in dividend_digits
-    }
+    // }
     // XXX: QUESTION: how to check if a divisor fits into a dividend without conversion?
     //      For binary it's simple to see if a divisor fits into a dividend. It either does or it doesn't.
     //      However, in Base 3, divisors can fit once or twice. Does that not require conversion? 
