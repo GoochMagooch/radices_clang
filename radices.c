@@ -1056,6 +1056,8 @@ void calc_div(int *dividend, int *divisor, int iterator, int r) {
     // int temp_dividend = dividend[0];
     // if (divisor_integer > temp_dividend) { // NOTE: IN RADIX
         // calculation to combine next element in dividend_digits
+    // } else {
+        // calculation to find how many times the divisor goes into temp_dividend?
     // }
     // XXX: QUESTION: how to check if a divisor fits into a dividend without conversion?
     //      For binary it's simple to see if a divisor fits into a dividend. It either does or it doesn't.
